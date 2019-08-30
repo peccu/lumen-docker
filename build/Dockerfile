@@ -10,7 +10,7 @@ RUN set -x ; \
         && apt-get install -y cmake
 RUN set -x ; \
         llvmenv build-entry 7.0.0
-RUN set -s ; \
+RUN set -x ; \
         git clone https://github.com/lumen/lumen.git /lumen \
         && cd /lumen \
         && export LLVENV_RUST_BINDING=1 \
