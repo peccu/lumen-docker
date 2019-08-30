@@ -14,5 +14,4 @@ RUN set -s ; \
         git clone https://github.com/lumen/lumen.git /lumen \
         && cd /lumen \
         && export LLVENV_RUST_BINDING=1 \
-        && source <\(llvmenv zsh\) \
         && make build
