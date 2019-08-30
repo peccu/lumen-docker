@@ -6,10 +6,10 @@ RUN set -x ; \
         && cargo +nightly install wasm-bindgen-cli \
         && cargo install --version 0.1.13 llvmenv \
         && llvmenv init \
-        && llvmenv build-entry 7.0.0 \
-        && export LLVENV_RUST_BINDING=1 \
-        && source <(llvmenv zsh)
+        && llvmenv build-entry 7.0.0
 RUN set -s ; \
         git clone https://github.com/lumen/lumen.git /lumen \
         && cd /lumen \
+        && export LLVENV_RUST_BINDING=1 \
+        && source <\(llvmenv zsh\) \
         && make build
