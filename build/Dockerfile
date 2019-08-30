@@ -15,4 +15,7 @@ RUN set -x ; \
         && cd /lumen \
         && llvmenv global 7.0.0 \
         && export LLVM_SYS_$(llvmenv version --major --minor)_PREFIX=$(llvmenv prefix) \
+        && cargo fetch
+RUN set -x ; \
+        cd /lumen \
         && make build
