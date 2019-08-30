@@ -13,5 +13,6 @@ RUN set -x ; \
 RUN set -x ; \
         git clone https://github.com/lumen/lumen.git /lumen \
         && cd /lumen \
-        && export LLVENV_RUST_BINDING=1 \
+        && llvmenv global 7.0.0 \
+        && export LLVM_SYS_$(llvmenv version --major --minor)_PREFIX=$(llvmenv prefix) \
         && make build
