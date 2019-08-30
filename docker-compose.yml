@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  lumen:
+    build: ./build
+    volumes:
+      - .:/usr/src/myapp
+    working_dir: /usr/src/myapp
+    user: ${CURRENT_UID}
+    command: tail -f /dev/null
+    stop_signal: SIGKILL
