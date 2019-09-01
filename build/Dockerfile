@@ -1,21 +1,26 @@
-FROM rust:1.37.0
-# docker run -it --rm --user "$(id -u)":"$(id -g)" -v "$PWD":/usr/src/myapp -w /usr/src/myapp rust:1.37.0 bash
-RUN set -x ; \
-        rustup default nightly \
-        && rustup target add wasm32-unknown-unknown --toolchain nightly \
-        && cargo +nightly install wasm-bindgen-cli \
-        && cargo install --version 0.1.13 llvmenv \
-        && llvmenv init \
+FROM ubuntu:latest
+
+RUN set -x \
         && apt-get update \
-        && apt-get install -y cmake
-RUN set -x ; \
-        llvmenv build-entry 7.0.0
-RUN set -x ; \
-        git clone https://github.com/lumen/lumen.git /lumen \
+        && apt-get install -y curl git cmake pkg-config libssl-dev ninja-build ccache python3.7-minimal
+RUN set -x \
+        && curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
+
+RUN set -x \
+        && . $HOME/.cargo/env \
+        && rustup target add wasm32-unknown-unknown --toolchain nightly \
+        && cargo +nightly install wasm-bindgen-cli
+RUN set -x \
+        && git clone --depth 1 https://github.com/lumen/llvm-project /llvm-project \
+        && cd /llvm-project \
+        && make llvm
+        # && llvmenv init \
+        # && llvmenv global /usr/lib/llvm-7 \
+        # && export LLVM_SYS_$(llvmenv version --major --minor)_PREFIX=$(llvmenv prefix) \
+RUN set -x \
+        && git clone --depth 1 https://github.com/lumen/lumen.git /lumen \
         && cd /lumen \
-        && llvmenv global 7.0.0 \
-        && export LLVM_SYS_$(llvmenv version --major --minor)_PREFIX=$(llvmenv prefix) \
         && cargo fetch
-RUN set -x ; \
-        cd /lumen \
+RUN set -x \
+        && cd /lumen \
         && make build
