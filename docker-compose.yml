@@ -5,7 +5,8 @@ services:
     volumes:
       - .:/usr/src/myapp
     working_dir: /usr/src/myapp
-    user: ${CURRENT_UID}
+    # CURRENT_UID=$(id -u):$(id -g)
+    # user: ${CURRENT_UID}
     # command: tail -f /dev/null
     command: sh
     stop_signal: SIGKILL
